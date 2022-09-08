@@ -9,9 +9,6 @@ const connectToDB = () => {
     })
     .then((data) => {
       console.log(`MongoDB connected : ${data.connection.host}`);
-    })
-    .catch((err) => {
-      console.error(err);
     });
 };
 
