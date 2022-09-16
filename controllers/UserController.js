@@ -177,3 +177,63 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json({ sucess: true });
 });
+
+// Get all users -- admin
+exports.getAllUsers = catchAsyncError(async (req, res, next) => {
+  const users = await User.find();
+
+  res.status(200).json({
+    sucess: true,
+    users,
+  });
+});
+
+// Get single user --admin
+exports.getUser = catchAsyncError(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(
+      new ErrorHandler(`User does not exist with id ${req.body.params}`)
+    );
+  }
+  res.status(200).json({ sucess: true, user });
+});
+
+// update user role -- admin
+exports.updateUserRole = catchAsyncError(async (req, res, next) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
+
+  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  if (!user) {
+    return next(
+      new ErrorHandler(`User does not exist with id : ${req.params.id}`)
+    );
+  }
+  res.status(200).json({ sucess: true, message: "User updated successfully" });
+});
+
+// delete user -- admin
+exports.deleteUser = catchAsyncError(async (req, res, next) => {
+  // have to implement something to delete avtar
+
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return next(
+      new ErrorHandler(`User does not exist with id : ${req.params.id}`)
+    );
+  }
+
+  await user.remove();
+
+  res.status(200).json({ sucess: true, message: "User deleted successfully" });
+});

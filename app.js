@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use("/api/v1/products", require("./routes/ProductRoute"));
+app.use("/api/v1", require("./routes/ProductRoute"));
 app.use("/api/v1", require("./routes/UserRoute"));
 
 // Middle ware for error
