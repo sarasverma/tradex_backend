@@ -10,6 +10,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/v1", require("./routes/ProductRoute"));
 app.use("/api/v1", require("./routes/UserRoute"));
+app.use("/api/v1", require("./routes/OrderRoute"));
 
 // Middle ware for error
 app.use(ErrorMiddleware);
