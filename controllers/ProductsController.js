@@ -17,15 +17,29 @@ exports.addProduct = catchAsyncError(async (req, res) => {
 
 // Get all product
 exports.getAllProduct = catchAsyncError(async (req, res) => {
-  const resultPerPage = 5;
+  const resultPerPage = 8;
   const productsCount = await Product.countDocuments();
 
   const apiFeatures = new ApiFeatures(Product.find(), req.query)
     .search()
-    .filter()
-    .pagination(resultPerPage);
-  const products = await apiFeatures.query;
-  res.status(200).json({ sucess: true, products });
+    .filter();
+
+  let products = await apiFeatures.query;
+
+  let filterProductsCount = products.length;
+
+  apiFeatures.pagination(resultPerPage);
+
+  // for running duplicate query again
+  products = await apiFeatures.query.clone();
+
+  res.status(200).json({
+    sucess: true,
+    products,
+    productsCount,
+    resultPerPage,
+    filterProductsCount,
+  });
 });
 
 // Get product
@@ -37,7 +51,6 @@ exports.getProduct = catchAsyncError(async (req, res, next) => {
   return res.status(200).json({
     success: true,
     product,
-    productsCount,
   });
 });
 
