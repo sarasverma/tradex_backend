@@ -5,6 +5,10 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
+const dotnet = require("dotenv");
+
+//Config file path
+dotnet.config({ path: "./config/config.env" });
 
 app.use(express.json());
 app.use(cookieParser());
@@ -15,6 +19,7 @@ app.use(fileUpload());
 app.use("/api/v1", require("./routes/ProductRoute"));
 app.use("/api/v1", require("./routes/UserRoute"));
 app.use("/api/v1", require("./routes/OrderRoute"));
+app.use("/api/v1", require("./routes/PaymentRoute"));
 
 // Middle ware for error
 app.use(ErrorMiddleware);

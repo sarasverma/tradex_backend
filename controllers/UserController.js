@@ -81,9 +81,11 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
   // save user to save reset token and expire to user schema
   await user.save({ validateBeforeSave: false });
 
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/password/reset/${resetToken}`;
+  // const resetPasswordUrl = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/api/v1/password/reset/${resetToken}`;
+
+  const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
   const message = `Your password reset link is  :- \n \n ${resetPasswordUrl}\n\nIf you have not requested this email then, please ignore it.`;
 
